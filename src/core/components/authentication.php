@@ -135,8 +135,11 @@ trait Authentication {
      */
     public static function keygen($amount) {
         $amount = ($amount >= 5) ? $amount : 5;
-
-        return base64_encode(openssl_random_pseudo_bytes($amount));
+        $pkey = base64_encode(openssl_random_pseudo_bytes($amount));
+        while (strpos($pkey, "/")) {
+          $pkey = base64_encode(openssl_random_pseudo_bytes($amount));
+        }
+        return $pkey;
     }
 
     /**
